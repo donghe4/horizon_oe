@@ -2,3 +2,5 @@ horizon_j5_*
 *tar.gz
 data
 tmp_data
+__pycache__
+.hat_*

@@ -22,6 +22,7 @@ if [ "$run_type" == "cpu" ];then
     docker run -it --rm \
       -v "$open_explorer_path":/open_explorer \
       -v "$dataset_path":/data \
+      --name donghe_bev_ipm \
       openexplorer/ai_toolchain_ubuntu_20_j5_cpu:"$version"
 else
     echo "Start Docker container in GPU mode."
@@ -31,5 +32,6 @@ else
       --shm-size="32g" \
       -v "$open_explorer_path":/open_explorer \
       -v "$dataset_path":/data \
+      --name donghe_bev_ipm \
       openexplorer/ai_toolchain_ubuntu_20_j5_gpu:"$version"
 fi

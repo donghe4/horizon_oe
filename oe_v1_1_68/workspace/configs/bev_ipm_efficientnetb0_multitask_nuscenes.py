@@ -21,9 +21,9 @@ from hat.utils.config import ConfigVersion
 VERSION = ConfigVersion.v2
 training_step = os.environ.get("HAT_TRAINING_STEP", "float")
 
-task_name = "bev_ipm_efficientnetb0_multitask_nuscenes"
-batch_size_per_gpu = 4
-device_ids = [0, 1, 2, 3]
+task_name = "bev_mt_ipm"
+batch_size_per_gpu = 16
+device_ids = [0, 1]
 dataloader_workers = batch_size_per_gpu  # per gpu
 ckpt_dir = "./tmp_models/%s" % task_name
 cudnn_benchmark = True
@@ -45,7 +45,7 @@ vt_input_hw = (
 )  # view transformer input shape for generationg reference points.
 weight_decay = 0.01
 start_lr = 2e-4
-train_epochs = 40
+train_epochs = 2
 
 bev_size = (51.2, 51.2, 0.8)
 grid_size = (128, 128)
@@ -468,7 +468,7 @@ val_nuscenes_metric = dict(
     type="NuscenesMetric",
     data_root=meta_rootdir,
     version="v1.0-trainval",
-    save_prefix="./WORKSPACE/results" + task_name,
+    save_prefix="./results" + task_name,
 )
 
 val_miou_metric = MeanIOU(seg_class=seg_classes_name, ignore_index=-1)
@@ -542,7 +542,7 @@ float_trainer = dict(
             dict(
                 type="LoadCheckpoint",
                 checkpoint_path=(
-                    "./tmp_pretrained_models/efficientnet_imagenet/float-checkpoint-best.pth.tar"  # noqa: E501
+                    "./tmp_pretrained_models/efficientnet_cls/float-checkpoint-best.pth.tar"  # noqa: E501
                 ),
                 allow_miss=True,
                 ignore_extra=True,

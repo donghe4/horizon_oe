@@ -1,0 +1,133 @@
+callbacks:
+  docstring:
+    - "Callbacks widely used while training in HAT."
+data:
+  docstring:
+    - "Main data module for training in HAT, which contains datasets, transforms, samplers."
+  ignore:
+    hat.data.transforms.real3d:
+      - ParseDataReal3DMultitask
+    hat.data.transforms.detection: 
+      - DetYOLOXMixUp
+    hat.data.datasets.gaze.gaze_dataset:
+      - GazeRecDataset
+    hat.data.datasets.nlu_dataset: 
+      - NluBasicTokenizer
+    hat.data.datasets.traj_pred_dataset: 
+      - AutoMultiAgentNaviDataset
+      - TrajPredFPVPedDataset
+      - TrajPredJaadDataset
+      - TrajPredLMDBDateset
+    hat.data.transforms.avspeech.augment:
+      - RIRSimulator
+    hat.data.transforms.frame.crop:
+      - DynamicCropImgPatch
+
+engine:
+  docstring:
+    - "Engine of the main train loop in HAT."
+  ignore:
+    hat.engine.ddp_trainer:
+      - distributed_data_parallel_trainer
+    hat.engine.apex_ddp_trainer:
+      - apex_distributed_data_parallel_trainer
+    hat.engine.dp_trainer:
+      - data_parallel_trainer
+metrics:
+  docstring:
+    - "Metrics widely used for different datasets in HAT."
+  ignore:
+    hat.metrics.detection_bev.metric:
+      - HorizonBEVDetMetric
+    hat.metrics.traj_pred_metrics:
+      - BehavPredMetric
+      - TrajPredFPVPedMetric
+models:
+  docstring:
+    - "Models widely used in upper module in HAT."
+  ignore:
+    hat.models.losses.focal_loss:
+      - ClassificationFocalLoss
+    hat.models.backbones.contrib.mobilenetv2:
+      - mobilenet_v2
+    hat.models.backbones.snapdragon.fasternet:
+      - SNDRFasterNet
+    hat.models.base_modules.extend_container:
+      - MultiInputSequential
+    hat.models.base_modules.label_encoder:
+      - MatchLabelFlankEncoder
+      - RCNNMultiBinDetLabelFromMatch
+    hat.models.base_modules.postprocess.add_desc:
+      - AddDesc
+    hat.models.base_modules.postprocess.filter_module:
+      - FilterModule
+    hat.models.base_modules.postprocess.rcnn_postprocess:
+      - RCNNPostProcess
+    hat.models.base_modules.roi_feat_extractors:
+      - Cropper
+      - CropperQAT
+      - RoiResize
+    hat.models.base_modules.target.bbox_target:
+      - ProposalTarget3D
+      - ProposalTargetBinDet
+      - ProposalTargetRoi3D
+    hat.models.base_modules.transformer_bricks:
+      - BaseTransformerLayer
+    hat.models.embeddings:
+      - SinePositionalEncoding3D
+    hat.models.losses.traj_pred_loss:
+      - SGNetLoss
+    hat.models.model_convert.converters:
+      - QAT2Quantize
+    hat.models.model_convert.pipelines:
+      - ModelConvertPipeline
+    hat.models.structures.human3d.spin:
+      - SPIN
+    hat.models.task_modules.output_module:
+      - OutputModule
+    hat.models.task_modules.fcos3d.head:
+      - FCOS3DHead
+    hat.models.task_modules.hand3d.losses.loss_structure:
+      - H3DLossStucture
+    hat.models.task_modules.human3d.smplify.smplify:
+      - SMPLify
+    hat.models.task_modules.solov2.loss:
+      - MaskLoss
+    hat.models.task_modules.traj_pred.backbones.vectornet_backbone:
+      - VectorNetBackbone
+    hat.models.task_modules.traj_pred.heads.http_heads:
+      - HeatmapHead
+      - TrajRegHead
+    hat.models.task_modules.traj_pred.heads.multipath_head:
+      - MultiPathHead
+    hat.models.task_modules.traj_pred.pre_process.multipath_pre_process:
+      - MultipathPreProcess
+    hat.models.task_modules.traj_pred.structures.http:
+      - MaxPointsSampler
+    hat.models.task_modules.traj_pred.structures.multipath:
+      - Multipath
+    hat.models.task_modules.traj_pred.structures.vectornet:
+      - BasicVectorNet
+    hat.models.task_modules.traj_pred.backbones.home_encoder:
+      - HomeEncoder
+    hat.models.task_modules.traj_pred.backbones.multipathpp_encoder:
+      - MTPPlusEncoder
+optimizers:
+  docstring:
+    - "Extend optimizers in HAT."
+profiler:
+  docstring:
+    - "Profilers widely used for perf in HAT."
+  ignore:
+    hat.profiler.model_profiler:
+      - CheckQConfig
+      - ModelProfiler
+visualize:
+  docstring:
+    - "Visualize code snippets for various task."
+  ignore:
+    hat.visualize.bev_3d:
+      - Bev3DVisualize
+      - corners_nd
+    hat.visualize.cam3d:
+      - show_multi_modality_result
