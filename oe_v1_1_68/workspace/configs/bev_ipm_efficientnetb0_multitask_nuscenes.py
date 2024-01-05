@@ -20,8 +20,7 @@ from hat.utils.config import ConfigVersion
 
 VERSION = ConfigVersion.v2
 training_step = os.environ.get("HAT_TRAINING_STEP", "float")
-
-task_name = "bev_mt_ipm"
+task_name = "bev_ipm_efficientnetb0_multitask_nuscenes"
 batch_size_per_gpu = 16
 device_ids = [0, 1]
 dataloader_workers = batch_size_per_gpu  # per gpu
@@ -542,7 +541,7 @@ float_trainer = dict(
             dict(
                 type="LoadCheckpoint",
                 checkpoint_path=(
-                    "./tmp_pretrained_models/efficientnet_cls/float-checkpoint-best.pth.tar"  # noqa: E501
+                    "./tmp_pretrained_models/efficientnet_imagenet/float-checkpoint-best.pth.tar"  # noqa: E501
                 ),
                 allow_miss=True,
                 ignore_extra=True,
