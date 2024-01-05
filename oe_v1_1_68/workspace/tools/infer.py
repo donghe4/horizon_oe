@@ -1,4 +1,5 @@
 """align bpu validation tools, Only support int-infer"""
+"""modify from workspace/tools/infer.py"""
 import argparse
 import os
 import pathlib
@@ -69,34 +70,28 @@ if __name__ == "__main__":
     init_logger(f".hat_logs/{config.task_name}_infer_viz")
     horizon.march.set_march(config.get("march"))
 
+    # import pdb; pdb.set_trace()
     infer_cfg = config.get("infer_cfg")
 
     # get model inputs and process
-    prepare_inputs = infer_cfg.get("prepare_inputs", defualt_prepare_inputs)
-    process_inputs = infer_cfg.get("process_inputs")
+    prepare_inputs = infer_cfg.get("prepare_inputs", defualt_prepare_inputs) # call infer_inputs meaningless
+    process_inputs = infer_cfg.get("process_inputs") 
     process_outputs = infer_cfg.get("process_outputs")
-    if args.model_inputs is not None:
+    
+    if args.model_inputs is not None: # replace by args or default 
         infer_inputs = _analyze_inputs(args.model_inputs)
     else:
-        infer_inputs = infer_cfg.get("infer_inputs")
+        infer_inputs = infer_cfg.get("infer_inputs") 
+    prepared_inputs = prepare_inputs(infer_inputs) # [{'imagedir': './test_images', 'homo': 'homography.npy'}]
 
-    prepared_inputs = prepare_inputs(infer_inputs)
-
-    # build data transforms
-    transforms = infer_cfg.get("transforms", None)
-
-    if transforms is not None:
-        transforms = build_from_registry(transforms)
-        transforms = torchvision.transforms.Compose(transforms)
 
     # build model and load ckpt
     model = build_from_registry(infer_cfg.get("model"))
     model.eval()
-    model_convert_pipeline = infer_cfg.get("model_convert_pipeline")
+    model_convert_pipeline = infer_cfg.get("model_convert_pipeline") #
+
     if args.pretrained_ckpt is not None:
-        model_convert_pipeline["converters"][1][
-            "checkpoint_path"
-        ] = args.pretrained_ckpt
+        model_convert_pipeline["converters"][1]["checkpoint_path"] = args.pretrained_ckpt
     model_convert_pipeline = build_from_registry(model_convert_pipeline)
     quantized_model = model_convert_pipeline(model)
 
@@ -110,8 +105,8 @@ if __name__ == "__main__":
     else:
         viz_func = partial(viz_func, save_path=args.save_path)
 
-    for prepared_input in prepared_inputs:
-        model_input, vis_inputs = process_inputs(prepared_input, transforms)
+    for prepared_input in prepared_inputs: #[{'imagedir': './test_images', 'homo': 'homography.npy'},{...},{...}]
+        model_input, vis_inputs = process_inputs(prepared_input)
         model_input = to_cuda(
             model_input, device=args.device_id, non_blocking=True
         )
