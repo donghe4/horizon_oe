@@ -55,16 +55,17 @@ if __name__ == "__main__":
         model = onnx_solver["model"].eval()
         pipeline = onnx_solver.get("model_convert_pipeline")
         stage = onnx_solver["stage"]
-        if pipeline is not None:
-            model = pipeline(model)
-        else:
-            logger.warning(
-                format_msg(
-                    f"not define model_convert_pipeline for {stage} stage "
-                    f"model, will directly export the model to onnx...",
-                    MSGColor.RED,
-                )
-            )
+        
+        # if pipeline is not None:
+        #     model = pipeline(model)
+        # else:
+        #     logger.warning(
+        #         format_msg(
+        #             f"not define model_convert_pipeline for {stage} stage "
+        #             f"model, will directly export the model to onnx...",
+        #             MSGColor.RED,
+        #         )
+        #     )
 
     example_input = onnx_solver.get("inputs", cfg.deploy_inputs)
     out_dir = onnx_solver.get("out_dir", cfg.get("ckpt_dir", "."))

@@ -54,6 +54,7 @@ Decompress `v1.0-trainval_meta.tar` and `nuscenes-map-extension-v1.3.zip`, then 
 ### 2. Train 
 modify configs according to your device
 ```python 
+$cd /open_explorer/worksapce/
 $python3 tools/train.py --config configs/bev_ipm_efficientnetb0_multitask_nuscenes.py --stage float
 ```
 
